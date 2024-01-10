@@ -10,12 +10,12 @@ class PictureRepository {
 
   Future<PictureModel> getPictureDetails() async {
     try {
-      final pictureData = await pictureDataProvider.geetPictureDetails();
+      final pictureData = await pictureDataProvider.getPicturePlayingDetails();
 
-      final pData = jsonDecode(pictureData);
-      // if (pData['cod'] != '200') {
-      //   throw Exception( 'A craxy error occured.');
-      // }
+      final pData = jsonDecode(pictureData.toString());
+      if (pData['cod'] != '200') {
+        throw Exception( 'A craxy error occured.');
+      }
 
     return PictureModel.fromMap(pData);
     } catch (e) {

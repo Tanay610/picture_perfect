@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:picture_perfect/cubit/movie_cubit.dart';
+import 'package:picture_perfect/models/picture_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PictureHomePage extends StatefulWidget {
   const PictureHomePage({super.key});
@@ -34,8 +39,7 @@ class _PictureHomePageState extends State<PictureHomePage> {
             );
           }
 
-          final data = state.pictureModel;
-          final pictureUrl = data.posterPath;
+          List <PictureModel> dataList = state.pictureModel;
 
           return CustomScrollView(
             slivers: [
@@ -46,26 +50,51 @@ class _PictureHomePageState extends State<PictureHomePage> {
                 elevation: 30,
                 title: Text(
                   "Picture Perfect",
+                  style: TextStyle(
+                    fontFamily: 'Dosis',
+                    fontWeight: FontWeight.w600
+                  ),
                 ),
                 centerTitle: true,
               ),
-              SliverToBoxAdapter(
-                child: CarouselSlider.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index, pageIndex) {
-                      return Container(
-                        color: Colors.black,
-                        child: Center(
-                          child: Image.network("https://image.tmdb.org/t/p/w500$pictureUrl"),
-                        ),
-                      );
-                    },
-                    options: CarouselOptions(
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
-                      autoPlay: true,
-                      height: 486,
-                    )),
+              SliverPadding(
+                padding: EdgeInsets.only(top: 15),
+                sliver: SliverToBoxAdapter(
+                  child: CarouselSlider.builder(
+                      itemCount: dataList.length,
+                      itemBuilder: (context, index, pageIndex) {
+                        PictureModel movie = dataList[index];
+                        final backdroPath = movie.backdropPath;
+                        return Stack(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: 'https://image.tmdb.org/t/p/original${backdroPath}',
+                            height: MediaQuery.of(context).size.height/3,
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url)=>Platform.isAndroid?CircularProgressIndicator.adaptive(backgroundColor: const Color.fromARGB(255, 233, 112, 103),):CupertinoActivityIndicator(),
+                            errorWidget: (context, url, error) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/imaages/icons8-no-image-100.png'))
+                              ),
+                            ),
+                            ),
+                
+                          ],
+                        );
+                      },
+                      options: CarouselOptions(
+                        enableInfiniteScroll: true,
+                        autoPlayInterval: Duration(seconds: 5),
+                        autoPlayAnimationDuration: Duration(microseconds: 800),
+                        pauseAutoPlayOnTouch: true,
+                        viewportFraction: 0.68,
+                        enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                        aspectRatio: 2.0,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                      )),
+                ),
               )
             ],
           );

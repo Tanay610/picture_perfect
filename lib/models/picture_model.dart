@@ -3,78 +3,82 @@ import 'dart:convert';
 
 class PictureModel {
   final int id;
-  final String posterPath;
+  final String originalLanguage;
+  final String originalTitle;
+  final String overview;
   final String release_date;
-  final int runtime;
-  final String status;
-  final String title;
-  final String tagline;
-  final String backdrop_path;
-  final int budget;
+  final String posterPath;
+  final String backdropPath;
+  final bool video;
+  final int votecount;
+  final double popularity;
 
   PictureModel({
     required this.id,
-    required this.posterPath,
+    required this.originalLanguage,
+    required this.originalTitle,
+    required this.overview,
     required this.release_date,
-    required this.runtime,
-    required this.status,
-    required this.title,
-    required this.tagline,
-    required this.backdrop_path,
-    required this.budget,
+    required this.posterPath,
+    required this.backdropPath,
+    required this.video,
+    required this.votecount,
+    required this.popularity,
   });
-  
-
 
   PictureModel copyWith({
     int? id,
-    String? posterPath,
+    String? originalLanguage,
+    String? originalTitle,
+    String? overview,
     String? release_date,
-    int? runtime,
-    String? status,
-    String? title,
-    String? tagline,
-    String? backdrop_path,
-    int? budget,
+    String? posterPath,
+    String? backdropPath,
+    bool? video,
+    int? votecount,
+    double? popularity,
   }) {
     return PictureModel(
       id: id ?? this.id,
-      posterPath: posterPath ?? this.posterPath,
+      originalLanguage: originalLanguage ?? this.originalLanguage,
+      originalTitle: originalTitle ?? this.originalTitle,
+      overview: overview ?? this.overview,
       release_date: release_date ?? this.release_date,
-      runtime: runtime ?? this.runtime,
-      status: status ?? this.status,
-      title: title ?? this.title,
-      tagline: tagline ?? this.tagline,
-      backdrop_path: backdrop_path ?? this.backdrop_path,
-      budget: budget ?? this.budget,
+      posterPath: posterPath ?? this.posterPath,
+      backdropPath: backdropPath ?? this.backdropPath,
+      video: video ?? this.video,
+      votecount: votecount ?? this.votecount,
+      popularity: popularity ?? this.popularity,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'posterPath': posterPath,
+      'originalLanguage': originalLanguage,
+      'originalTitle': originalTitle,
+      'overview': overview,
       'release_date': release_date,
-      'runtime': runtime,
-      'status': status,
-      'title': title,
-      'tagline': tagline,
-      'backdrop_path': backdrop_path,
-      'budget': budget,
+      'posterPath': posterPath,
+      'backdropPath': backdropPath,
+      'video': video,
+      'votecount': votecount,
+      'popularity': popularity,
     };
   }
 
   factory PictureModel.fromMap(Map<String, dynamic> map) {
     return PictureModel(
-      id: map['id'],
-      posterPath: map['poster_path'],
-      release_date: map['release_date'],
-      runtime: map['runtime'],
-      status: map['status'],
-      title: map['title'],
-      tagline: map['tagline'],
-      backdrop_path: map['backdrop_path'],
-      budget: map['budget'],
+      id: map['id'] as int,
+      originalLanguage: map['original_language'] as String,
+      originalTitle: map['original_title'] as String,
+      overview: map['overview'] as String,
+      release_date: map['release_date'] as String,
+      posterPath: map['poster_path'] as String,
+      backdropPath: map['backdrop_path'] as String,
+      video: map['video'] as bool,
+      votecount: map['vote_count'] as int,
+      popularity: map['popularity'] as double,
     );
   }
 
@@ -84,7 +88,7 @@ class PictureModel {
 
   @override
   String toString() {
-    return 'PictureModel(id: $id, posterPath: $posterPath, release_date: $release_date, runtime: $runtime, status: $status, title: $title, tagline: $tagline, backdrop_path: $backdrop_path, budget: $budget)';
+    return 'PictureModel(id: $id, originalLanguage: $originalLanguage, originalTitle: $originalTitle, overview: $overview, release_date: $release_date, posterPath: $posterPath, backdropPath: $backdropPath, video: $video, votecount: $votecount, popularity: $popularity)';
   }
 
   @override
@@ -93,26 +97,28 @@ class PictureModel {
   
     return 
       other.id == id &&
-      other.posterPath == posterPath &&
+      other.originalLanguage == originalLanguage &&
+      other.originalTitle == originalTitle &&
+      other.overview == overview &&
       other.release_date == release_date &&
-      other.runtime == runtime &&
-      other.status == status &&
-      other.title == title &&
-      other.tagline == tagline &&
-      other.backdrop_path == backdrop_path &&
-      other.budget == budget;
+      other.posterPath == posterPath &&
+      other.backdropPath == backdropPath &&
+      other.video == video &&
+      other.votecount == votecount &&
+      other.popularity == popularity;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      posterPath.hashCode ^
+      originalLanguage.hashCode ^
+      originalTitle.hashCode ^
+      overview.hashCode ^
       release_date.hashCode ^
-      runtime.hashCode ^
-      status.hashCode ^
-      title.hashCode ^
-      tagline.hashCode ^
-      backdrop_path.hashCode ^
-      budget.hashCode;
+      posterPath.hashCode ^
+      backdropPath.hashCode ^
+      video.hashCode ^
+      votecount.hashCode ^
+      popularity.hashCode;
   }
 }
