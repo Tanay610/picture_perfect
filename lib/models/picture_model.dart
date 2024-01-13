@@ -5,6 +5,7 @@ class PictureModel {
   final int id;
   final String originalLanguage;
   final String originalTitle;
+  final String title;
   final String overview;
   final String release_date;
   final String posterPath;
@@ -17,6 +18,7 @@ class PictureModel {
     required this.id,
     required this.originalLanguage,
     required this.originalTitle,
+    required this.title,
     required this.overview,
     required this.release_date,
     required this.posterPath,
@@ -30,6 +32,7 @@ class PictureModel {
     int? id,
     String? originalLanguage,
     String? originalTitle,
+    String? title,
     String? overview,
     String? release_date,
     String? posterPath,
@@ -42,6 +45,7 @@ class PictureModel {
       id: id ?? this.id,
       originalLanguage: originalLanguage ?? this.originalLanguage,
       originalTitle: originalTitle ?? this.originalTitle,
+      title: title ?? this.title,
       overview: overview ?? this.overview,
       release_date: release_date ?? this.release_date,
       posterPath: posterPath ?? this.posterPath,
@@ -57,6 +61,7 @@ class PictureModel {
       'id': id,
       'originalLanguage': originalLanguage,
       'originalTitle': originalTitle,
+      'title': title,
       'overview': overview,
       'release_date': release_date,
       'posterPath': posterPath,
@@ -72,6 +77,7 @@ class PictureModel {
       id: map['id'] as int,
       originalLanguage: map['original_language'] as String,
       originalTitle: map['original_title'] as String,
+      title: map['title'] as String,
       overview: map['overview'] as String,
       release_date: map['release_date'] as String,
       posterPath: map['poster_path'] as String,
@@ -88,7 +94,7 @@ class PictureModel {
 
   @override
   String toString() {
-    return 'PictureModel(id: $id, originalLanguage: $originalLanguage, originalTitle: $originalTitle, overview: $overview, release_date: $release_date, posterPath: $posterPath, backdropPath: $backdropPath, video: $video, votecount: $votecount, popularity: $popularity)';
+    return 'PictureModel(id: $id, originalLanguage: $originalLanguage, originalTitle: $originalTitle, title: $title, overview: $overview, release_date: $release_date, posterPath: $posterPath, backdropPath: $backdropPath, video: $video, votecount: $votecount, popularity: $popularity)';
   }
 
   @override
@@ -99,6 +105,7 @@ class PictureModel {
       other.id == id &&
       other.originalLanguage == originalLanguage &&
       other.originalTitle == originalTitle &&
+      other.title == title &&
       other.overview == overview &&
       other.release_date == release_date &&
       other.posterPath == posterPath &&
@@ -113,6 +120,7 @@ class PictureModel {
     return id.hashCode ^
       originalLanguage.hashCode ^
       originalTitle.hashCode ^
+      title.hashCode ^
       overview.hashCode ^
       release_date.hashCode ^
       posterPath.hashCode ^

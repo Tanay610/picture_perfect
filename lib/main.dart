@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:picture_perfect/bloc/genres%20bloc/genre_bloc.dart';
 import 'package:picture_perfect/bloc/movie%20bloc/movie_bloc.dart';
 import 'package:picture_perfect/bloc/movie%20bloc/movie_bloc_event.dart';
-import 'package:picture_perfect/cubit/movie_cubit.dart';
+import 'package:picture_perfect/cubit/genre%20cubit/genre_cubit.dart';
+import 'package:picture_perfect/cubit/movie%20cubit/movie_cubit.dart';
 import 'package:picture_perfect/data/data%20provider/picture_data_provider.dart';
-import 'package:picture_perfect/data/repository/picture_repository.dart';
 import 'package:picture_perfect/presentation/pages/picture_explore_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +22,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: ((context) => MovieBloc())
         ),
-        BlocProvider(create: ((context) => MovieCubit(PictureDataProvider())))
+        BlocProvider(create: ((context) => MovieCubit(PictureDataProvider()))),
+        BlocProvider(create: ((context) => GenreBloc())),
+        BlocProvider(create: ((context)=>GenreCubit(PictureDataProvider())))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
