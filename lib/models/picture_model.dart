@@ -13,6 +13,8 @@ class PictureModel {
   final bool video;
   final int votecount;
   final double popularity;
+  final double voteaverage;
+  final List<dynamic> genre_ids;
 
   PictureModel({
     required this.id,
@@ -26,7 +28,9 @@ class PictureModel {
     required this.video,
     required this.votecount,
     required this.popularity,
-  });
+    required this.voteaverage,
+    required this.genre_ids,  
+    });
 
   PictureModel copyWith({
     int? id,
@@ -40,6 +44,8 @@ class PictureModel {
     bool? video,
     int? votecount,
     double? popularity,
+    double? voteaverage,
+    List<dynamic>? genre_ids,
   }) {
     return PictureModel(
       id: id ?? this.id,
@@ -53,22 +59,26 @@ class PictureModel {
       video: video ?? this.video,
       votecount: votecount ?? this.votecount,
       popularity: popularity ?? this.popularity,
+      voteaverage: voteaverage ?? this.voteaverage,
+      genre_ids: genre_ids ?? this.genre_ids
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'originalLanguage': originalLanguage,
-      'originalTitle': originalTitle,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
       'title': title,
       'overview': overview,
       'release_date': release_date,
-      'posterPath': posterPath,
-      'backdropPath': backdropPath,
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath,
       'video': video,
-      'votecount': votecount,
+      'vote_count': votecount,
       'popularity': popularity,
+      'vote_average': voteaverage,
+      'genre_ids': genre_ids
     };
   }
 
@@ -85,6 +95,8 @@ class PictureModel {
       video: map['video'] as bool,
       votecount: map['vote_count'] as int,
       popularity: map['popularity'] as double,
+      voteaverage: map['vote_average'] as double,
+      genre_ids: map['genre_ids']
     );
   }
 
@@ -112,6 +124,8 @@ class PictureModel {
       other.backdropPath == backdropPath &&
       other.video == video &&
       other.votecount == votecount &&
+      other.voteaverage == voteaverage&&
+      other.genre_ids == genre_ids&&
       other.popularity == popularity;
   }
 
@@ -127,6 +141,8 @@ class PictureModel {
       backdropPath.hashCode ^
       video.hashCode ^
       votecount.hashCode ^
+      votecount.hashCode^
+      genre_ids.hashCode^
       popularity.hashCode;
   }
 }

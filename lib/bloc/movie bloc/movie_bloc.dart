@@ -9,7 +9,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState>{
   MovieBloc(): super(MovieLoading());
 
   @override
-  Stream<MovieState> mapEventState(MovieEvent event)async*{
+  Stream<MovieState> mapEventz(MovieEvent event)async*{
     if (event is MovieEventStarted) {
       yield* _mapMovieEventToState(event.movieId, event.query);
     }

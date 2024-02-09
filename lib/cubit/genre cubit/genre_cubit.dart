@@ -16,6 +16,7 @@ class GenreCubit extends Cubit<GenreState> {
     try {
       final genre = await _pictureDataProvider.getGenreList();
       emit(GenreSuccess(genreModel: genre));
+      print(genre);
     } catch (e) {
       emit(GenreFailure(e.toString()));
       

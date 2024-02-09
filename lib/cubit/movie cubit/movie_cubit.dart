@@ -1,3 +1,4 @@
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:picture_perfect/data/data%20provider/picture_data_provider.dart';
@@ -10,20 +11,39 @@ class MovieCubit extends Cubit<MovieState> {
   final PictureDataProvider? pictureRepository;
   MovieCubit(this.pictureRepository) : super(MovieInitial());
 
-  Future<void> getPictureDetails(int movieId,String query )async{
+   List<PictureModel> allMovies = [];
+  List<PictureModel> filteredMovies = [];
+
+  Future<void> getPictureDetails()async{
     emit(MovieLoading());
     try {
-      if(movieId==0){   
       final movie = await pictureRepository!.getPicturePlayingDetails();
-      emit(MovieSuccess(pictureModel: movie));
-      }else{
-        final movie2 = await pictureRepository!.getMovieByGenres(movieId);
-        emit(MovieSuccess(pictureModel: movie2));
-      }
+       allMovies = movie;
+      // filteredMovies = movie; 
+      emit(MovieSuccess(pictureModel: movie,));
 
     } catch (e) {
       emit(MovieFailure(e.toString()));
       
     }
   } 
+
+  // Future<void> getclassifyDetails(int movieId, String query)async{
+  //   emit(MovieLoading());
+  //   try {
+  //     emit(MovieSuccess(pictureModel: movie2, sorting: true));
+  //   } catch (e) {
+  //     emit(MovieFailure(e.toString()));
+      
+  //   }
+  // }
+  
+
+   
+
+//   List<PictureModel> filterMoviesByGenre(List<PictureModel> allMovies, int selectedGenreId) {
+//     emit(MovieSortedOut(pictureModel: []));
+//   return allMovies.where((movie) => movie.genre_ids.contains(selectedGenreId)).toList();
+
+// }
 }

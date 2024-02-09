@@ -13,6 +13,13 @@ final class MovieSuccess extends MovieState{
   MovieSuccess({required this.pictureModel});
 }
 
+final class MovieSortedOut extends MovieState{
+  
+  final List<PictureModel> pictuModel;
+
+  MovieSortedOut({required this.pictuModel});
+}
+
 final class MovieFailure extends MovieState{
   final String error;
 
