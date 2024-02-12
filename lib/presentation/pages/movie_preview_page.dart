@@ -2,19 +2,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:picture_perfect/cubit/bloc/bloc/favorite_bloc.dart';
+import 'package:picture_perfect/cubit/movie%20cubit/movie_cubit.dart';
 import 'package:picture_perfect/data/data%20provider/picture_data_provider.dart';
 import 'package:picture_perfect/models/picture_image.dart';
+import 'package:picture_perfect/models/picture_model.dart';
 import 'package:picture_perfect/models/preview_model.dart';
 import 'package:picture_perfect/models/screen_shot.dart';
 import 'package:picture_perfect/movie_preview_bloc/bloc/movie_preview_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
- 
+
 import '../../models/cast_list.dart';
 
 class MoviePreviewPage extends StatefulWidget {
   final int movieId;
-  const MoviePreviewPage({super.key, required this.movieId});
+  final PictureModel movie;
+   MoviePreviewPage({
+    super.key,
+    required this.movieId,
+    required this.movie,
+  });
 
   @override
   State<MoviePreviewPage> createState() => _MoviePreviewPageState();
@@ -23,32 +32,82 @@ class MoviePreviewPage extends StatefulWidget {
 class _MoviePreviewPageState extends State<MoviePreviewPage> {
   bool isExpanded = false;
   bool isfavorite = false;
+  List<String> titles = [];
+  List<String> overview = [];
+  List<String> stringImage = [];
+
+  void saveData() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _prefs.setStringList("movieTitle", titles..add(widget.movie.title));
+      _prefs.setStringList(
+          "movieOverview", overview..add(widget.movie.overview));
+      _prefs.setStringList(
+          "movieImage", stringImage..add(widget.movie.posterPath));
+      // _prefs.setBool("favorite", isfavorite!);
+    });
+  }
+
+  // void loadbool() async {
+  //   SharedPreferences _prefs = await SharedPreferences.getInstance();
+  //   isfavorite = _prefs.getBool("favorite");
+  // }
+
+  Future<void> removeFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('movieTitle');
+    await prefs.remove('movieOverview');
+    await prefs.remove('movieImage');
+    await prefs.remove('favorite');
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<FavoriteBloc>().state;
     return BlocProvider(
       create: (_) => MoviePreviewBloc(PictureDataProvider())
         ..add(MoviePreviewEventStarted(id: widget.movieId)),
       child: PopScope(
           child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              leading: IconButton(onPressed: (){
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+              onPressed: () {
                 Navigator.pop(context);
-              }, icon: Icon(Icons.arrow_back,
-              color: Colors.white,
-              )),
-              actions: [
-                IconButton(onPressed: (){
-                  setState(() {
-                    isfavorite=!isfavorite;
-                  });
-                }, icon:isfavorite?Icon(Icons.favorite,
-                color: Colors.red.shade300,
-                ) :Icon(Icons.favorite_border_outlined,
+              },
+              icon: Icon(
+                Icons.arrow_back,
                 color: Colors.white,
-                ))
-              ],
-            ),
+              )),
+          actions: [
+               IconButton(
+  onPressed: () {
+    if (state is FavoriteAdded && state.movieList.any((movie) => movie.id == widget.movieId)) {
+      //? Dispatch RemoveFromFavoriteEvent when the favorite icon is tapped again
+      context.read<FavoriteBloc>().add(RemoveFromFavoriteEvent(widget.movieId));
+    } else {
+      //? Dispatch AddToFavoriteEvent when the favorite icon is tapped
+      context.read<FavoriteBloc>().add(FavoriteEventStarted(widget.movieId));
+    }
+    
+  },
+  icon: Icon(
+        // Display the correct icon based on the state
+        (state is FavoriteAdded && state.movieList.any((movie) => movie.id == widget.movieId))
+            ? Icons.favorite
+            : Icons.favorite_border,
+            color: Colors.red,
+      ),
+),
+             
+          ],
+        ),
         body: _buildPreviewBody(context, isExpanded),
         // extendBody: true,
         extendBodyBehindAppBar: true,
@@ -71,7 +130,6 @@ class _MoviePreviewPageState extends State<MoviePreviewPage> {
           PictureImage pictureImageShots = state.pictureImage;
           final String vack = previeDetails.backdroPath;
           return Stack(
-            
             children: [
               ClipPath(
                 child: ClipRRect(
@@ -102,7 +160,6 @@ class _MoviePreviewPageState extends State<MoviePreviewPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  
                   SizedBox(
                     height: 150,
                   ),
@@ -138,7 +195,7 @@ class _MoviePreviewPageState extends State<MoviePreviewPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Text(
@@ -194,7 +251,7 @@ class _MoviePreviewPageState extends State<MoviePreviewPage> {
                         },
                         itemCount: pictureImageShots.backdrops!.length),
                   ),
-                  
+
                   SizedBox(
                     child: Row(
                       children: [
@@ -212,7 +269,9 @@ class _MoviePreviewPageState extends State<MoviePreviewPage> {
                   ),
                   SizedBox(
                     height: 70,
-                    child: ExpandableText(text: previeDetails.overview,),
+                    child: ExpandableText(
+                      text: previeDetails.overview,
+                    ),
                   ),
                   // GestureDetector(
                   //   onTap: () {
@@ -334,7 +393,6 @@ class _MoviePreviewPageState extends State<MoviePreviewPage> {
     );
   }
 }
-
 
 class ExpandableTextWidget extends StatelessWidget {
   final String text;

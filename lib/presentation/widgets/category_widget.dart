@@ -12,6 +12,7 @@ import 'package:picture_perfect/cubit/movie%20cubit/movie_cubit.dart';
 import 'package:picture_perfect/models/genre_model.dart';
 import 'package:picture_perfect/models/picture_model.dart';
 import 'package:picture_perfect/presentation/pages/movie_preview_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryWidget extends StatefulWidget {
   const CategoryWidget({super.key, this.selectedGenre = 28});
@@ -32,6 +33,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     context.read<GenreCubit>().getGenreList();
     context.read<NowPlayBloc>().add(GetPlayList(genreId: selectedGenre));
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +148,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       GestureDetector(
                         onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){
-          return MoviePreviewPage(movieId: movieId);
+          return MoviePreviewPage(movieId: movieId, movie: movie,);
         }));
                         },
                         child: ClipRect(

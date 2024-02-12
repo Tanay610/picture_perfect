@@ -15,9 +15,9 @@ final class MovieSuccess extends MovieState{
 
 final class MovieSortedOut extends MovieState{
   
-  final List<PictureModel> pictuModel;
+  final bool isfavorite;
 
-  MovieSortedOut({required this.pictuModel});
+  MovieSortedOut({required this.isfavorite});
 }
 
 final class MovieFailure extends MovieState{

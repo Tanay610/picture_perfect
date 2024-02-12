@@ -9,7 +9,7 @@ part 'movie_state.dart';
 
 class MovieCubit extends Cubit<MovieState> {
   final PictureDataProvider? pictureRepository;
-  MovieCubit(this.pictureRepository) : super(MovieInitial());
+  MovieCubit(this.pictureRepository,) : super(MovieInitial());
 
    List<PictureModel> allMovies = [];
   List<PictureModel> filteredMovies = [];
@@ -27,6 +27,10 @@ class MovieCubit extends Cubit<MovieState> {
       
     }
   } 
+
+  set volly(bool favorite){
+    favorite = !favorite;
+  }
 
   // Future<void> getclassifyDetails(int movieId, String query)async{
   //   emit(MovieLoading());
